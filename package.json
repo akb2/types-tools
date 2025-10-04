@@ -1,0 +1,46 @@
+{
+  "name": "@akb2/types-tools",
+  "version": "1.0.0",
+  "description": "Extends tools & types for TypeScript",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "keywords": [
+    "tools",
+    "types",
+    "typescript"
+  ],
+  "author": "Андрей",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akb2/types-tools.git"
+  },
+  "bugs": {
+    "url": "https://github.com/akb2/types-tools/issues"
+  },
+  "peerDependencies": {
+    "@akb2/math": ">=1 <2"
+  },
+  "devDependencies": {
+    "@akb2/math": "^1.0.0",
+    "tsup": "^8.0.0",
+    "typescript": "^5.4.0"
+  },
+  "scripts": {
+    "build": "tsup src/index.ts --dts --format esm,cjs --clean --out-dir dist",
+    "prepublishOnly": "npm run build"
+  }
+}
