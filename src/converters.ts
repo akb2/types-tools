@@ -10,19 +10,25 @@ import { round } from "@akb2/math";
 export const isDefined = <T>(value?: T): boolean => value !== null && value !== undefined;
 
 /**
- * Converts any value to a floating-point number, with optional rounding and default value.
+ * Converts any value to a floating-point number, with optional rounding.
  *
  * @param value - The value to convert to a float.
  * @param defaultValue - The value to return if conversion fails (default is 0).
- * @param afterDotNum - The number of decimal places to round to (default is 0).
+ * @param afterDotNum - The number of decimal places to round to. If set to -1, rounds to the number of decimals present in the converted value.
  * @returns The converted and rounded floating-point number.
  */
-export const anyToFloat = (value: any, defaultValue: number = 0, afterDotNum: number = 0): number => {
+export const anyToFloat = (value: any, defaultValue: number = 0, afterDotNum: number = -1): number => {
   let num: number = parseFloat(value);
 
   num = isNaN(num)
     ? defaultValue
     : num;
+
+  if (afterDotNum === -1) {
+    const [, decimals] = num.toString().split(".");
+
+    afterDotNum = decimals?.length ?? 0;
+  }
 
   return round(num, afterDotNum);
 };
