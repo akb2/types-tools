@@ -1,4 +1,4 @@
-export type CustomObjectKey<K, V> = Record<string | number | symbol, V>;
+export type CustomObjectKey<K extends string | number | symbol, V> = Record<K, V>;
 export type CustomObject<V> = CustomObjectKey<string, V>;
 export type SimpleObject = CustomObject<string>;
 

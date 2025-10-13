@@ -1,36 +1,28 @@
 import { round } from "@akb2/math";
-
-/**
- * Determines whether a value is neither `null` nor `undefined`.
- *
- * @typeParam T - The type of the value to check.
- * @param value - The value to test for definition.
- * @returns `true` if the value is defined (not `null` or `undefined`), otherwise `false`.
- */
-export const isDefined = <T>(value?: T): boolean => value !== null && value !== undefined;
+import { isDefined } from "../methods";
 
 /**
  * Converts any value to a floating-point number, with optional rounding.
  *
  * @param value - The value to convert to a float.
  * @param defaultValue - The value to return if conversion fails (default is 0).
- * @param afterDotNum - The number of decimal places to round to. If set to -1, rounds to the number of decimals present in the converted value.
+ * @param precision - The number of decimal places to round to. If set to -1, rounds to the number of decimals present in the converted value.
  * @returns The converted and rounded floating-point number.
  */
-export const anyToFloat = (value: any, defaultValue: number = 0, afterDotNum: number = -1): number => {
+export const anyToFloat = (value: any, defaultValue: number = 0, precision: number = -1): number => {
   let num: number = parseFloat(value);
 
   num = isNaN(num)
     ? defaultValue
     : num;
 
-  if (afterDotNum === -1) {
+  if (precision === -1) {
     const [, decimals] = num.toString().split(".");
 
-    afterDotNum = decimals?.length ?? 0;
+    precision = decimals?.length ?? 0;
   }
 
-  return round(num, afterDotNum);
+  return round(num, precision);
 };
 
 /**
