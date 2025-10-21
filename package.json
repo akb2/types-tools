@@ -1,6 +1,6 @@
 {
   "name": "@akb2/types-tools",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Extends tools & types for TypeScript",
   "type": "module",
   "main": "./dist/index.cjs",
@@ -34,8 +34,10 @@
   "peerDependencies": {
     "@akb2/math": ">=1 <2"
   },
+  "dependencies": {
+    "@akb2/math": "^1"
+  },
   "devDependencies": {
-    "@akb2/math": "^1",
     "@types/jest": "^30.0.0",
     "jest": "^30.2.0",
     "ts-jest": "^29.4.5",
