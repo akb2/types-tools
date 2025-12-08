@@ -1,3 +1,5 @@
+import { NotDefinable } from "../models";
+
 /**
  * Creates an array of the specified length. If the getItem function is provided, fills the array
  * with the values ​​returned by that function.
@@ -21,4 +23,4 @@ export const createArray = <T = number>(length: number, getItem?: ((index: numbe
  * @param value - The value to test for definition.
  * @returns `true` if the value is defined (not `null` or `undefined`), otherwise `false`.
  */
-export const isDefined = <T>(value?: T): boolean => value !== null && value !== undefined;
+export const isDefined = <T>(value?: NotDefinable<T>): value is Exclude<T, null | undefined> => value !== null && value !== undefined;

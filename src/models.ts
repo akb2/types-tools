@@ -6,3 +6,7 @@ export type MultiArray<T> = T[] | MultiArray<T>[];
 export type MultiObject<V> = { [key: string]: V | MultiObject<V> };
 
 export type Delta = -1 | 0 | 1;
+
+export type Nullable<T> = T | null;
+export type Undefinable<T> = T | undefined;
+export type NotDefinable<T> = T | null | undefined;

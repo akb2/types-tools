@@ -99,6 +99,26 @@ anyToBoolean(false);         // false
 anyToBoolean("Any string");  // false
 ```
 
+### `anyToDate(value, defaultDate?)`
+
+Converts any input value into a valid `Date` instance.
+If conversion is not possible, the provided `defaultDate` is returned (or `new Date()` by default).
+
+**Conversion rules:**
+
+* `string` or `number` → converted via `new Date(value)`
+* valid `Date` instance → returned as-is
+* anything else → returns `defaultDate`
+
+```ts
+anyToDate("2025-05-01");                // Date("2025-05-01T00:00:00.000Z")
+anyToDate(1700000000000);               // Date from timestamp
+anyToDate(new Date("2024-01-01"));      // same Date instance
+anyToDate("invalid");                   // returns default Date (now)
+anyToDate(null);                        // returns default Date (now)
+anyToDate({}, new Date("2000-01-01"));  // returns provided fallback date
+```
+
 ### `createArray(length, getItem?)`
 
 Creates an array of the specified length.
@@ -160,6 +180,30 @@ A numeric delta value: `-1`, `0`, or `1`.
 
 ```ts
 type Delta = -1 | 0 | 1;
+```
+
+### `Nullable<V>`
+
+Represents a value that can either be of type `V` or explicitly `null`.
+
+```ts
+type Nullable<V> = V | null;
+```
+
+### `Undefinable<V>`
+
+Represents a value that can either be of type `V` or `undefined`.
+
+```ts
+type Undefinable<V> = V | undefined;
+```
+
+### `NotDefinable<V>`
+
+Represents a value that can either be of type `V` or `undefined`.
+
+```ts
+type NotDefinable<V> = V | null | undefined;
 ```
 
 ## Example Usage

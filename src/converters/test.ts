@@ -1,4 +1,4 @@
-import { anyToArray, anyToBoolean, anyToFloat, anyToInt, anyToString } from ".";
+import { anyToArray, anyToBoolean, anyToDate, anyToFloat, anyToInt, anyToString } from ".";
 import { allArgsString, firstArgString, resultString } from "../test-tools";
 import { AnyToArrayTestData } from "../test-tools/models";
 
@@ -93,6 +93,37 @@ describe(
     testData.forEach(([input, expected]) => it(
       `anyToBoolean(${allArgsString(input)}) is ${resultString(expected)}`,
       () => expect(anyToBoolean(input)).toEqual(expected)
+    ));
+  }
+);
+
+describe(
+  "anyToDate",
+  () => {
+    const testData = [
+      ["2025-05-01", undefined, "2025-05-01T00:00:00.000Z"],
+      [1700000000000, undefined, "2023-11-14T22:13:20.000Z"],
+      [new Date("2024-01-01"), undefined, "2024-01-01T00:00:00.000Z"],
+      ["invalid", undefined, true],
+      [null, undefined, true],
+      [{}, new Date("2000-01-01"), "2000-01-01T00:00:00.000Z"],
+    ];
+
+    testData.forEach(([input, defaultValue, expected]) => it(
+      `anyToDate(${firstArgString(input, defaultValue)}) is ${resultString(expected === true
+        ? new Date().toISOString()
+        : <string>expected
+      )}`,
+      () => {
+        const checkDate = defaultValue
+          ? anyToDate(input, <Date>defaultValue)
+          : anyToDate(input);
+
+        return expect(checkDate.toISOString()).toEqual(expected === true
+          ? new Date().toISOString()
+          : expected
+        );
+      }
     ));
   }
 );

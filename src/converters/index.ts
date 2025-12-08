@@ -81,3 +81,28 @@ export const anyToBoolean = (value: any): boolean => {
   // Проверка
   return !!value && trueValues.includes(value);
 };
+
+/**
+ * Safely converts any input value to a valid `Date` instance.
+ *
+ * Conversion rules:
+ * - If the value is a `string` or `number`, a new `Date` is created from it.
+ * - If the value is already a valid `Date` instance, it is returned as-is.
+ * - For all other cases (invalid date, null, undefined, objects, etc.),
+ *   the provided `defaultDate` is returned.
+ *
+ * @param value - Any input value to convert.
+ * @param defaultDate - Fallback date returned when conversion is not possible. Defaults to `new Date()`.
+ * @returns A valid `Date` instance.
+ */
+export const anyToDate = (value: any, defaultDate = new Date()) => {
+  if (typeof value === "string" || typeof value === "number") {
+    value = new Date(value);
+  }
+
+  if (value instanceof Date && !isNaN(value.getTime())) {
+    return value;
+  }
+
+  return defaultDate;
+};

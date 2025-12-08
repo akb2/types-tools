@@ -1,5 +1,5 @@
 
-type ArgTypes = string | number | boolean | undefined | Function | null;
+type ArgTypes = object | Date | string | number | boolean | undefined | Function | null;
 export type ArgType = ArgTypes[] | ArgTypes;
 
 export type CreateArrayTestData<T extends any> = [

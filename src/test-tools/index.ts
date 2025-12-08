@@ -9,6 +9,10 @@ const toString = (value: ArgType, quotes = true): string => {
     return `[${value.map(v => toString(v, quotes)).join(", ")}]`;
   } else if (typeof value === "string" && quotes) {
     return `"${value}"`;
+  } else if (value instanceof Date) {
+    return `\x1b[33mnew Date(\x1b[35m"${value.toISOString()}"\x1b[33m)\x1b[37m`;
+  } else if (typeof value === "object" && value !== null) {
+    return JSON.stringify(value);
   }
 
   return value.toString();
