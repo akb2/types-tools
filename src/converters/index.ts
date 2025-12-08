@@ -56,14 +56,14 @@ export const anyToString = (value: any, defaultTitle = ""): string => value?.toS
  * @param value - The value or array of values to convert.
  * @returns An array containing the input value(s), or an empty array if the input is undefined or null.
  */
-export const anyToArray = <T>(value: T | T[]): T[] => {
+export const anyToArray = <T>(value: T | T[]): Exclude<T, null | undefined>[] => {
   if (isDefined(value)) {
     return Array.isArray(value)
-      ? value
+      ? <Exclude<T, null | undefined>[]>value
       : [value];
   }
 
-  return <T[]>[];
+  return <Exclude<T, null | undefined>[]>[];
 };
 
 /**
