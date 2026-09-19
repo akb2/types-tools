@@ -101,6 +101,7 @@ describe(
   "anyToDate",
   () => {
     const testData = [
+      // input, defaultValue, expected
       ["2025-05-01", undefined, "2025-05-01T00:00:00.000Z"],
       [1700000000000, undefined, "2023-11-14T22:13:20.000Z"],
       [new Date("2024-01-01"), undefined, "2024-01-01T00:00:00.000Z"],
@@ -110,7 +111,7 @@ describe(
     ];
 
     testData.forEach(([input, defaultValue, expected]) => it(
-      `anyToDate(${firstArgString(input, defaultValue)}) is ${resultString(expected === true
+      `anyToDate(${firstArgString(input, defaultValue)}) is ${resultString(expected === true || expected === undefined
         ? new Date().toISOString()
         : <string>expected
       )}`,
@@ -119,7 +120,8 @@ describe(
           ? anyToDate(input, <Date>defaultValue)
           : anyToDate(input);
 
-        return expect(checkDate.toISOString()).toEqual(expected === true
+        // If expected is true or undefined, we expect the current date's ISO string. Otherwise, we expect the provided expected string.
+        return expect(checkDate.toISOString()).toEqual(expected === true || expected === undefined
           ? new Date().toISOString()
           : expected
         );
