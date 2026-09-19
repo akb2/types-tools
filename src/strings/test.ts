@@ -28,7 +28,7 @@ describe(
   }
 );
 
-describe('Smart substrings joiner', () => {
+describe('smartJoin', () => {
   const testData: [string, string[], string][] = [
     // joiner, subStrings, expected
     ['/', ['//', 'a', 'b', 'c', '//'], 'a/b/c'],
