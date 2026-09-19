@@ -57,11 +57,17 @@ export const anyToString = (value: any, defaultTitle = ""): string => value?.toS
  * @param value - The value or array of values to convert.
  * @returns An array containing the input value(s), or an empty array if the input is undefined or null.
  */
-export const anyToArray = <T>(value: NotDefinable<T | T[]>): Exclude<T, null | undefined>[] => {
+export const anyToArray = <T>(value: NotDefinable<T | T[] | Set<T>>): Exclude<T, null | undefined>[] => {
   if (isDefined(value)) {
-    return Array.isArray(value)
-      ? <Exclude<T, null | undefined>[]>value
-      : [value];
+    if (Array.isArray(value)) {
+      return <Exclude<T, null | undefined>[]>value;
+    }
+
+    if (value instanceof Set) {
+      return <Exclude<T, null | undefined>[]>Array.from(value);
+    }
+
+    return [value];
   }
 
   return <Exclude<T, null | undefined>[]>[];
