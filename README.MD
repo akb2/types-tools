@@ -200,10 +200,50 @@ type Undefinable<V> = V | undefined;
 
 ### `NotDefinable<V>`
 
-Represents a value that can either be of type `V` or `undefined`.
+Represents a value that can either be of type `V`, `null`, or `undefined`.
 
 ```ts
 type NotDefinable<V> = V | null | undefined;
+```
+
+### `Enum`
+
+A helper type for enum-like objects and values.
+
+```ts
+type Enum<T> = T[keyof T];
+```
+
+### `EnumValue<E extends Enum>`
+
+Extracts the union of all values from an enum-like object.
+Useful when you want to type a variable as one of the allowed enum values without manually listing them.
+
+```ts
+enum Status {
+  Active = "active",
+  Inactive = "inactive",
+};
+
+type StatusValue = EnumValue<typeof Status>;
+// "active" | "inactive"
+
+const current: StatusValue = "active"; // OK
+// const wrong: StatusValue = "pending"; // Error
+```
+
+### `EnumValues<E>`
+
+Returns enum values as a union of their original literal types and stringified forms.
+
+```ts
+enum Role {
+  Admin = "admin",
+  User = "user",
+}
+
+type RoleValues = EnumValues<typeof Role>;
+// Role.Admin | Role.User | "admin" | "user"
 ```
 
 ## Example Usage

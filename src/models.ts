@@ -10,3 +10,12 @@ export type Delta = -1 | 0 | 1;
 export type Nullable<T> = T | null;
 export type Undefinable<T> = T | undefined;
 export type NotDefinable<T> = T | null | undefined;
+
+export type Enum = Readonly<Record<string, string | number>>;
+export type EnumValue<E extends Enum> = E[keyof E];
+export type EnumValues<E> =
+  E extends Record<string, string | number>
+    ? EnumValue<E> | (EnumValue<E> extends infer V extends string | number ? `${V}` : never)
+    : E extends string | number
+      ? E | `${E}`
+      : never;
