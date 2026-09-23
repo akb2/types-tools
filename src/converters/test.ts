@@ -1,4 +1,4 @@
-import { anyToArray, anyToBoolean, anyToDate, anyToFloat, anyToInt, anyToString } from ".";
+import { anyToArray, anyToBoolean, anyToDate, anyToFloat, anyToInt, anyToString, flatObject, mergeAndFlatObjects } from ".";
 import { allArgsString, firstArgString, resultString } from "../test-tools";
 import { AnyToArrayTestData } from "../test-tools/models";
 
@@ -126,6 +126,38 @@ describe(
           : expected
         );
       }
+    ));
+  }
+);
+
+describe(
+  "flatObject",
+  () => {
+    const testData: [Record<string, unknown>, Record<string, unknown>][] = [
+      [{ a: 1, b: { c: 2 } }, { "a": 1, "b.c": 2 }],
+      [{}, {}],
+      [{ a: { b: { c: { d: 4 } } } }, { "a.b.c.d": 4 }],
+    ];
+
+    testData.forEach(([input, expected]) => it(
+      `flatObject(${allArgsString(input)}) is ${resultString(expected)}`,
+      () => expect(flatObject(input)).toEqual(expected)
+    ));
+  }
+);
+
+describe(
+  "mergeAndFlatObjects",
+  () => {
+    const testData: [Record<string, unknown>[], Record<string, unknown>][] = [
+      [[{ a: 1 }, { b: 2 }], { "a": 1, "b": 2 }],
+      [[{ a: { b: 1 } }, { a: { c: 2 } }], { "a.b": 1, "a.c": 2 }],
+      [[{}, {}], {}],
+    ];
+
+    testData.forEach(([input, expected]) => it(
+      `mergeAndFlatObjects(${allArgsString(input)}) is ${resultString(expected)}`,
+      () => expect(mergeAndFlatObjects(...input)).toEqual(expected)
     ));
   }
 );

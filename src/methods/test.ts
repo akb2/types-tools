@@ -1,4 +1,4 @@
-import { createArray, isDefined } from ".";
+import { createArray, isDefined, isObject } from ".";
 import { allArgsString, argsString, resultString } from "../test-tools";
 import { ArgType, CreateArrayTestData } from "../test-tools/models";
 
@@ -36,6 +36,31 @@ describe(
     testData.forEach(([value, expected]) => it(
       `isDefined(${allArgsString(value)}) is ${resultString(expected)}`,
       () => expect(isDefined(value)).toEqual(expected)
+    ));
+  }
+);
+
+describe(
+  "isObject",
+  () => {
+    const testData: [ArgType, boolean][] = [
+      [null, false],
+      [undefined, false],
+      [0, false],
+      ["", false],
+      [false, false],
+      [NaN, false],
+      [{}, true],
+      [{ a: 1 }, true],
+      [[], false],
+      [new Date(), false],
+      [() => null, false],
+      [class TestClass {}, false]
+    ];
+
+    testData.forEach(([value, expected]) => it(
+      `isObject(${allArgsString(value)}) is ${resultString(expected)}`,
+      () => expect(isObject(value)).toEqual(expected)
     ));
   }
 );

@@ -1,5 +1,5 @@
 import { round } from "@akb2/math";
-import { isDefined } from "../methods";
+import { isDefined, isObject } from "../methods";
 import { NotDefinable } from "../models";
 
 /**
@@ -112,4 +112,65 @@ export const anyToDate = (value: any, defaultDate = new Date()) => {
   }
 
   return defaultDate;
+};
+
+/**
+ * Flattens a nested object into a single-level object with dot-separated keys.
+ *
+ * @param object - The object to flatten.
+ * @returns A new object with flattened keys.
+ */
+export const flatObject = (object: Record<string, unknown>): Record<string, unknown> => {
+  let hasNested = false;
+
+  for (const key in object) {
+    if (isObject(object[key])) {
+      hasNested = true;
+
+      break;
+    }
+  }
+
+  if (!hasNested) {
+    return object;
+  }
+
+  const result = {} as Record<string, unknown>;
+
+  for (const key in object) {
+    const value = object[key];
+
+    if (!isObject(value)) {
+      result[key] = value;
+    } else {
+      const flat = flatObject(value as Record<string, unknown>);
+
+      for (const childKey in flat) {
+        result[`${key}.${childKey}`] = flat[childKey];
+      }
+    }
+  }
+
+  return result;
+};
+
+/**
+ * Merges multiple objects into one and flattens the result into a single-level object with dot-separated keys.
+ *
+ * @typeParam T - The type of the objects to merge.
+ * @param objects - The objects to merge and flatten.
+ * @returns A new object that is the result of merging and flattening all input objects.
+ */
+export const mergeAndFlatObjects = <T extends Record<string, unknown>>(...objects: T[]): T => {
+  const result = {} as Record<string, unknown>;
+
+  for (const object of objects) {
+    const flat = flatObject(object);
+
+    for (const key in flat) {
+      result[key] = flat[key];
+    }
+  }
+
+  return result as T;
 };

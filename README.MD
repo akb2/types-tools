@@ -28,6 +28,27 @@ isDefined(false);       // true
 isDefined(NaN);         // true
 ```
 
+
+
+### `isObject(value)`
+
+Checks whether a value is a plain object.
+
+Returns `true` only for non-null object values that are not arrays and whose prototype is exactly `Object.prototype`.
+This is useful when you want to accept simple object literals while excluding arrays, dates, class instances, and other non-plain objects.
+
+```ts
+isObject({});                           // true
+isObject({ a: 1, b: true });            // true
+isObject({ nested: { ok: true } });     // true
+isObject([]);                           // false
+isObject(new Date());                   // false
+isObject(null);                         // false
+isObject(undefined);                    // false
+isObject("plain");                      // false
+isObject(42);                           // false
+```
+
 ### `anyToFloat(value, defaultValue = 0, precision = -1)`
 
 Converts any value to a floating-point number, with optional rounding.
@@ -117,6 +138,73 @@ anyToDate(new Date("2024-01-01"));      // same Date instance
 anyToDate("invalid");                   // returns default Date (now)
 anyToDate(null);                        // returns default Date (now)
 anyToDate({}, new Date("2000-01-01"));  // returns provided fallback date
+```
+
+### `flatObject(object)`
+
+Flattens a nested plain object into a single-level object with dot-separated keys.
+Only plain objects are flattened recursively. Arrays and other non-plain values are kept unchanged.
+
+```ts
+flatObject({
+  user: {
+    name: "Alice",
+    address: {
+      city: "London",
+      zip: 12345,
+    },
+  },
+  active: true,
+});
+
+// {
+//   "user.name": "Alice",
+//   "user.address.city": "London",
+//   "user.address.zip": 12345,
+//   active: true
+// }
+
+flatObject({
+  ids: [1, 2, 3],
+  meta: { count: 3 },
+});
+
+// {
+//   ids: [1, 2, 3],
+//   "meta.count": 3
+// }
+```
+
+### `mergeAndFlatObjects(...objects)`
+
+Merges multiple plain objects into one result and flattens nested objects into dot-separated keys.
+Each input object is flattened with [flatObject()](#flatobjectobject) and then merged into a single output object.
+Keys from later arguments override earlier ones when the same path is repeated.
+
+```ts
+mergeAndFlatObjects(
+  {
+    user: {
+      name: "Alice",
+      active: true,
+    },
+  },
+  {
+    user: {
+      address: {
+        city: "London",
+      },
+    },
+    meta: { count: 3 },
+  }
+);
+
+// {
+//   "user.name": "Alice",
+//   "user.active": true,
+//   "user.address.city": "London",
+//   "meta.count": 3
+// }
 ```
 
 ### `createArray(length, getItem?)`

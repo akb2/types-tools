@@ -24,3 +24,12 @@ export const createArray = <T = number>(length: number, getItem?: ((index: numbe
  * @returns `true` if the value is defined (not `null` or `undefined`), otherwise `false`.
  */
 export const isDefined = <T>(value?: NotDefinable<T>): value is Exclude<T, null | undefined> => value !== null && value !== undefined;
+
+/**
+ * Checks if a value is a plain object.
+ *
+ * @param value - The value to check.
+ * @returns True if the value is a plain object, false otherwise.
+ */
+export const isObject = (value: unknown): value is Record<string, unknown> =>
+  isDefined(value) && typeof value === 'object' && !Array.isArray(value) && Object.getPrototypeOf(value) === Object.prototype;
